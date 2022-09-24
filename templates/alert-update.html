@@ -1,0 +1,67 @@
+{% extends 'layouts/single.html' %}
+
+{% block title %}Update an alert{% endblock %}
+
+{% block content %}
+
+<form method="post" class="form-container align-left">
+    <!-- Ticker input-->
+    <input type="hidden" name="ticker" value="{{ alert.stock.ticker }}" />
+    <div class="form-floating mb-3">
+        <input class="form-control" disabled type="text" id="ticker" placeholder="GOOGL" value="{{ alert.stock.ticker }}" />
+        <label for="ticker">Ticker</label>
+    </div>
+    <!-- Price input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="number" step=0.01 id="price" name="price" placeholder="100.00" value="{{ alert.price }}" />
+        <label for="price">Price alert</label>
+    </div>
+
+    <!-- Frequency input-->
+    <div class="form-floating mb-3" id="alertTimeTrigger">
+        <select class="form-select" id="frequency" name="frequency">
+            {% for i in frequencies %}
+                <option value="{{ i }}"{{ ' selected' if i == alert.frequency else '' }}>{{ frequencies[i] }}</option>
+            {% endfor %}
+        </select>
+        <label for="frequency">Frequency</label>
+    </div> 
+
+    <!-- Conditional inputs -->
+    <div class="row" id="alertTimeRow">
+        <!-- DayOfMonth input-->
+        <div class="col form-floating mb-3">
+            <select class="form-select" id="day" name="day">
+                {% for day in range(1, 32) %}
+                    <option value="{{ day }}"{{ ' selected' if day == alert.day else '' }}>{{ day }}</option>
+                {% endfor %}
+            </select>
+            <label for="day" class="ps-4">Day of month</label>
+        </div>
+        <!-- DayOfWeek input-->
+        <div class="col form-floating mb-3">
+            <select class="form-select" id="weekday" name="weekday">
+                {% for i in weekdays %}
+                    <option value="{{ i }}"{{ ' selected' if i == alert.weekday else '' }}>{{ weekdays[i] }}</option>
+                {% endfor %}
+            </select>
+            <label for="weekday" class="ps-4">Day of week</label>
+        </div>
+        <!-- Hour input-->
+        <div class="col form-floating mb-3">
+            <select class="form-select" id="hour" name="hour">
+                {% for hour in range(24) %}
+                    <option value="{{ hour }}"{{ ' selected' if hour == alert.hour else '' }}>{{ hour|hour_format }}</option>
+                {% endfor %}
+            </select>
+            <label for="hour" class="ps-4">Hour</label>
+        </div>
+    </div>
+
+    <!-- Submit Button-->
+    <div class="d-grid"><!-- Make button 100% width -->
+        <button type="submit" class="btn btn-primary rounded-pill btn-lg">Update</button>
+    </div>
+</form>
+
+{% endblock %}

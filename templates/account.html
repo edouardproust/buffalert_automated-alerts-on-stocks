@@ -1,0 +1,67 @@
+{% extends 'layouts/single.html' %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+
+<ul class="mb-5">
+    <li><b>Email:</b> {{ user.email }}</li>
+    <li><b>Registered on:</b> {{ user.created_at }}</li>
+    <li><b>Token:</b> {{ user.token }}</li>
+</ul>
+
+<h2>{{ "Update" if user.token else "Add a" }} token</h2>
+
+{% if not user.token %}
+    <div class="alert alert-primary"><b>Tip:</b> Getting an API Key is 100% free, forever.</div>
+{% endif %}
+
+<ol>
+    <li>Visit <a href="https://iexcloud.io/cloud-login#/register/" target="_blank">this page</a>. Select the “Individual” account type, then enter your name, email address, and a password, and click “Create account”.</li>
+    <li>Once registered, scroll down to “Get started for free” and click “Select Start plan” to choose the free plan.</li>
+    <li>Once you’ve confirmed your account via a confirmation email, visit <a href="https://iexcloud.io/console/tokens" target="_blank">this page</a>.</li>
+    <li>Copy the key that appears under the Token column (it should begin with "pk_") and past it in the field below.</li>
+</ol>
+
+<form method="post" class="form-container align-left">
+    <!-- API key input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="token" name="token" placeholder="pk_XXXXXXXXX" value="{{ user.token if user.token else "" }}" />
+        <label for="email">Token</label>
+    </div>
+    <!-- Submit Button-->
+    <div class="d-grid"><!-- Make button 100% width -->
+        <button type="submit" class="btn btn-primary rounded-pill btn-lg">{{ "Update" if user.token else "Add" }}</button>
+    </div>
+</form>
+
+<h2>Update credentials</h2>
+
+<form method="post" class="form-container align-left">
+    <!-- Email address input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="email" id="email" name="email" placeholder="name@example.com" value="{{ user.email }}" />
+        <label for="email">Email address</label>
+    </div>
+    <!-- Password input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="password" id="password" name="password" placeholder="abcdef123456#%=?" />
+        <label for="password">New password</label>
+    </div>
+    <!-- Password confirmation input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" placeholder="abcdef123456#%=?" />
+        <label for="password_confirmation">New password (confirmation)</label>
+    </div>
+    <!-- Submit Button-->
+    <div class="d-grid"><!-- Make button 100% width -->
+        <button type="submit" class="btn btn-primary rounded-pill btn-lg">Update</button>
+    </div>
+</form>
+<form action="account/delete" method="post" class="form-container align-left">
+    <div class="d-grid"><!-- Make button 100% width -->
+        <button type="submit" class="btn btn-outline-danger rounded-pill btn-lg" onclick="return confirm('Are you sure you want to delete your account? This action is not reversible.')">Delete account</button>
+    </div>
+</form>
+
+{% endblock %}

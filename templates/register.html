@@ -1,0 +1,30 @@
+{% extends 'layouts/single.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<form id="registerForm" method="post" class="form-container my-0">
+    <p class="text-muted small">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    <!-- Email address input-->
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" name="email" value="{{ email if email else '' }}" placeholder="name@example.com" />
+        <label for="email">Email address</label>
+    </div>
+    <!-- Password input-->
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="password" name="password" placeholder="abcdef123456#%=?" />
+        <label for="password">Password</label>
+    </div>
+    <!-- Password confirmation input-->
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="abcdef123456#%=?" />
+        <label for="password_confirmation">Password (confirmation)</label>
+    </div>
+    <!-- Submit Button-->
+    <div class="d-grid"><!-- Make button 100% width -->
+        <button class="btn btn-primary rounded-pill btn-lg" id="submitButton" type="submit">Sign up</button>
+    </div>
+</form>
+
+{% endblock %}

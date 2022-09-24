@@ -1,0 +1,58 @@
+{% extends 'layouts/single.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="d-flex align-items-center mb-4">
+    <h2 class="m-0">Alerts</h2>
+    {% if user.token %}
+        <a href="{{ url_for('alert_create') }}" class="btn btn-primary rounded-pill ms-2">Add new</a>
+    {% endif %}
+</div>
+{% if not user.token %}
+    <div class="alert alert-warning">You can't set alerts until you've added a security token to you account: <a href="{{ url_for('account') }}">Add a security token</a></div>
+{% else %}
+    {% if not alerts|length %}
+        <p>No alert yet.</p>
+    {% else %}
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ticker</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Alert Price</th>
+                    <th scope="col">Last Price</th>
+                    <th scope="col">Frequency</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in alerts %}
+                    <tr>
+                        <th scope="row" class="text-muted fw-light">{{ loop.index }}</th>
+                        <td class="text-muted fw-light">{{ alert.stock.ticker }}</td>
+                        <td class="fw-bold">{{ alert.stock.name }}</td>
+                        <td class="fw-bold">{{ alert.price|usd }}</td>
+                        <td>
+                            <span>{{ alert.stock.price|usd }} </span>
+                            {% if alert.stock.updated_at %}
+                                <span class="small text-muted">({{ alert.stock.updated_at|dt('short') }})</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ alert.frequency|frequency }}</td>
+                        <td>{{ alert|time_str }}</td>
+                        <td>
+                            <a href="{{ url_for('alert_update', id=alert.id) }}" class="btn btn-primary btn-sm rounded-pill">Edit</a>
+                            <a href="{{ url_for('alert_delete', id=alert.id) }}" class="btn btn-danger btn-sm rounded-pill" onclick="return confirm('Are you sure to delete? This action can\'t be redo?')">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

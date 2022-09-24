@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block main %}
+
+<!-- Mashead header-->
+<header class="masthead">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <div class="col-lg-6">
+                <!-- Mashead text and app badges-->
+                <div class="mb-5 mb-lg-0 text-center text-lg-start">
+                    <h1 class="display-1 lh-1 mb-3">Never miss a market move.</h1>
+                    <p class="lead fw-normal text-muted mb-5">Set up alerts on the assets in your portfolio and receive free email alerts when your desired price is reached by the market.</p>
+                    <div class="d-flex flex-column flex-lg-row align-items-center">
+                        <a class="btn btn-outline-dark py-3 px-4 rounded-pill" href="{{url_for('register')}}">Get alerts for free</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                {% include 'parts/device-mockup.html' %}
+            </div>
+        </div>
+    </div>
+</header>
+
+{% endblock main %}

@@ -1,0 +1,80 @@
+/* Write custom style here */
+
+:root {
+    --footer-min-height: 125px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.form-container.align-left {
+    margin-left: 0 !important;
+}
+
+#title {
+    padding-top: 130px;
+    padding-bottom: 50px;
+}
+
+#mainNav {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.logo {
+    max-height: 30px;
+    margin-right: 6px;
+}
+
+footer {
+    min-height: var(--footer-min-height);
+}
+
+.alert {
+    margin-bottom: 3rem;
+}
+
+.input-hidden {
+    display: none;
+}
+
+/* Layout: Single Page No-Title Dark */
+
+footer {
+    min-height: var(--footer-min-height)
+}
+
+section.no-title-dark {
+    display: flex;
+    height: calc(100vh - var(--footer-min-height));
+    padding-top: 9rem;
+    padding-bottom: 5rem;
+    margin-bottom: 0;
+}
+
+section.no-title-dark h2 {
+    font-size: 5rem;
+}
+
+section.no-title-dark * {
+    margin: auto;
+}
+
+section.no-title-dark * {
+    margin: auto;
+}
+
+section.no-title-dark,
+section.no-title-dark a {
+    color: white;
+}

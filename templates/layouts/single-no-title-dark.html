@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block main %}
+
+    <section id="content" class="no-title-dark bg-gradient-primary-to-secondary">
+        <div class="container px-5">
+
+            <h2>{{ self.title() }}.</h2>
+
+            {% block content %}{% endblock %}
+
+        </div>
+    </section>
+
+{% endblock %}

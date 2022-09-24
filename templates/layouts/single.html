@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block main %}
+
+        <!-- Title h1 -->
+        <section class="bg-gradient-primary-to-secondary" id="title">
+            <div class="container">
+                <h2 class="text-center text-white">{{ self.title() }}</h2>
+            </div>
+        </section>
+
+        <!-- Content -->
+        <section id="content">
+            <div class="container px-5">
+
+                <!-- Alerts -->
+                {% if get_flashed_messages() %}
+                    <header>
+                        <div class="alert alert-primary text-center" role="alert">
+                            {{ get_flashed_messages() | join(" ") }}
+                        </div>
+                    </header>
+                {% endif %}
+
+                <!-- Content -->
+                {% block content %}{% endblock %}
+                
+            </div>
+
+        </section>
+
+{% endblock %}

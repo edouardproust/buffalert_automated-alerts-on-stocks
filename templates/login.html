@@ -1,0 +1,25 @@
+{% extends 'layouts/single.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<form id="loginForm" method="post" class="form-container my-0">
+    <p class="text-muted small">Don't have an account yet? <a href="{{ url_for('register') }}">Register</a></p>
+    <!-- Email address input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="email" id="email" name="email" placeholder="name@example.com" value="{{ email if email }}" />
+        <label for="email">Email address</label>
+    </div>
+    <!-- Password input-->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="password" id="password" name="password" placeholder="abcdef123456#%=?" />
+        <label for="password">Password</label>
+    </div>
+    <!-- Submit Button-->
+    <div class="d-grid"><!-- Make button 100% width -->
+        <button type="submit" id="submitButton" class="btn btn-primary rounded-pill btn-lg">Sign in</button>
+    </div>
+</form>
+
+{% endblock %}

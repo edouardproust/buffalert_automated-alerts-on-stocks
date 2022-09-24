@@ -1,6 +1,6 @@
 # BuffAlert
 
-**BuffAlert is an application that allows you to receive free email alerts when a stock product crosses a certain price level.** 
+**BuffAlert allows users to receive free email alerts when a stock product crosses a certain price level.** 
 It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quotation. Each user need to subscribe to a iexcloud account and get an personal API to avoid exceeding Free plan's requests limit (all the steps to do so are explained to the user). At the moment, BuffAlert works with US stocks only, but will be deployed soon with commodities, currencies (forex) and crypto-currencies as well.
 
 ![BuffAlert preview](static/img/screenshot.png)

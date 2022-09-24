@@ -7,16 +7,18 @@ It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on
 
 ## Requirements
 
-- flask
-- flask-session
-- flask-sqlalchemy
-- mysql-connector-python
-- requests
-- apscheduler
-- werkzeug
-- python-dotenv
-- datetime
-- calendar
+```
+flask
+flask-session
+flask-sqlalchemy
+mysql-connector-python
+requests
+apscheduler
+werkzeug
+python-dotenv
+datetime
+calendar
+```
 
 ## Deployment
 

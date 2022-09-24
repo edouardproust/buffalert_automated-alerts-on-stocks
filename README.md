@@ -12,6 +12,7 @@ flask
 flask-session
 flask-sqlalchemy
 mysql-connector-python
+gunicorn
 requests
 apscheduler
 werkzeug

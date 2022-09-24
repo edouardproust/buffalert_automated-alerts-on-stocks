@@ -18,37 +18,33 @@ It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on
 - datetime
 - calendar
 
-[dev-packages]
-
-[requires]
-python_version = "3.8"
-
 ## Deployment
 
+1. Rename `..env` into `.env` and fill the file with your credentials
+2. Install dependencies
 ```bash
 pipenv install
 ```
-
-Create database: 
+3. Create database
 ```bash
 python3 -c 'from cli.db import create'
 ```
-Create tables:
+4. Create tables
 ```bash
 python3 -c 'from models import db; db.create_all()'
 ```
-Run the app: 
+5. Run the app
 ```bash
 flask run
 ```
-(Optionnal) Create a user (credentials: test@test.com / test):
-```bash
-python3 -c 'from models import User; User.create("test@test.com", "test")'
-```
-
-Launch alerts cronjob:
+6. Launch alerts cronjob
 ```bash
 python3 -c 'from cli.cron import check_alerts'
+```
+
+Create a user (credentials: test@test.com / test)
+```bash
+python3 -c 'from models import User; User.create("test@test.com", "test")'
 ```
 
 ### Navigate into database localy: 

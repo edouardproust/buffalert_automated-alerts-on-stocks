@@ -1,11 +1,7 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from flask import session
-
-if __name__ == "models.User": # cli
-    from models import db
-else: # flask run
-    from ..models import db, update, delete
+from models import db, update, delete
 
 
 class User(db.Model):

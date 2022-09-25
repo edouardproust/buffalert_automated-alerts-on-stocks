@@ -1,9 +1,5 @@
 from datetime import datetime
-
-if __name__ == "models.Stock": # cli
-    from models import db
-else: # flask run
-    from ..models import db, update, delete
+from models import db, update, delete
 
 
 class Stock(db.Model):

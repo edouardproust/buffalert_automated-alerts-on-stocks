@@ -2,15 +2,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-
-if __name__ == "helpers._email": # cli
-    import config as c
-    from helpers import _string, _number
-    from models import Stock, User
-else: # flask run
-    from .. import config as c
-    from ..helpers import _string, _number
-    from ..models import Stock, User
+import config as c
+from helpers import _string, _number
+from models import User
 
 cta = 'https://' + c.SITE_DOMAIN + '/dashboard'
 

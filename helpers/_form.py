@@ -1,7 +1,7 @@
 from flask import flash, request
 from werkzeug.security import check_password_hash
-from ..models import User, Stock, Alert
-from ..helpers import _stock
+from models import User, Stock, Alert
+from helpers import _stock
 
 
 def get(key):

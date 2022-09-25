@@ -1,1 +1,1 @@
-from . import config, helpers, models, cli
+import config, helpers, models, cli

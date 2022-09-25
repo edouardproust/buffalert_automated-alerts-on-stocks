@@ -23,22 +23,23 @@ calendar
 
 ## Deployment
 
-1. Rename `..env` into `.env` and fill the file with your credentials
-2. Install dependencies
+1. Clone the repository
+2. Rename `..env` into `.env` and fill the file with your credentials
+3. Install dependencies
 ```bash
 pipenv install
 ```
-3. Create database
+4. Create database
 ```bash
 python3 -c 'from cli.db import create'
 ```
-4. Create tables
+5. Create tables
 ```bash
 python3 -c 'from models import db; db.create_all()'
 ```
-5. Run the app
+6. Run the app
 ```bash
-flask run
+gunicorn app:app
 ```
 6. Launch alerts cronjob
 ```bash

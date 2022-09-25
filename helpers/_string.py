@@ -1,7 +1,4 @@
-if __name__ == "helpers._string": # cli
-    import config as c
-else: # flask run
-    from .. import config as c
+import config as c
 
 
 def datetime_to_string(datetime, format='full'):

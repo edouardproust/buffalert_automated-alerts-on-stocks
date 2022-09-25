@@ -1,13 +1,8 @@
 from calendar import week
 from flask import session
 from .Stock import Stock
-
-if __name__ == "models.Alert": # cli
-    from models import db, delete
-    from helpers._string import tupleToString
-else: # flask run
-    from ..models import db, update, delete
-    from ..helpers._string import tupleToString
+from models import db, update, delete
+from helpers._string import tupleToString
 
 class Alert(db.Model):
     

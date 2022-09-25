@@ -1,7 +1,4 @@
-if __name__ == "models.StockCategory": # cli
-    from models import db
-else: # flask run
-    from ..models import db, update, delete
+from models import db, update, delete
 
 
 class StockCategory(db.Model):

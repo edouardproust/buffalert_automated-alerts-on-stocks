@@ -1,11 +1,9 @@
 from flask import render_template, redirect, flash, url_for, request, session
 from werkzeug.security import generate_password_hash
 from datetime import datetime
-
-print(__name__)
-from . import config as c
-from .models import User, Stock, StockCategory, Alert
-from .helpers import _form, _session, _string, _number, _email
+import config as c
+from models import User, Stock, StockCategory, Alert
+from helpers import _form, _session, _string, _number, _email
 
 app = c.get_app()
 
@@ -134,7 +132,6 @@ def alert_create():
     # POST method
     if request.method == "POST":
         data = _form.alert_create_validate()
-        print(data)
         if data:
             category = StockCategory.get_by_name("US Stocks")
             # Create stock

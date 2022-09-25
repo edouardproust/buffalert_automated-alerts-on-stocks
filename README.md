@@ -21,13 +21,14 @@ datetime
 calendar
 ```
 
-## Deployment
+## Production
 
 1. Clone the repository
 2. Rename `..env` into `.env` and fill the file with your credentials
 3. Install dependencies
 ```bash
-pipenv install
+pipenv shell # launch virtual environment
+pipenv install 
 ```
 4. Create database
 ```bash
@@ -51,22 +52,55 @@ Create a user (credentials: test@test.com / test)
 python3 -c 'from models import User; User.create("test@test.com", "test")'
 ```
 
-### Navigate into database localy: 
+## Production
 
-**With CLI:**
-- Run the following commands:
+We will use [Heroku](https://www.heroku.com/) to deploy the app.
+
+1. Create a repository on Heroku
+```
+heroku create buffalert
+```
+2. Add a Buildpack for Python:
+```
+heroku buildpacks:set heroku/python -a buffalert
+```
+
+3. Push to heroku
+```
+git init
+heroku git:remote -a buffalert
+git add .
+git commit -m "First commit"
+git push -u heroku master
+```
+
+4. Set database
+```
+heroku addons:create cleardb:ignite
+heroku config | grep CLEARDB_DATABASE_URL # Get the db credentials # Should return a stirng like: `mysql://{user}:{password}@{host}/{database}?reconnect=true`
+# Set the environement variables (replace variables by the one from the previous string)
+heroku config:set DB_USER={user}
+heroku config:set DB_USER_PASSWORD={password}
+heroku config:set DB_HOST={host}
+heroku config:set DB={database}
+
+```
+
+
+### Manage database localy: 
+
+With CLI:
 ```bash
 mysql -u <username> -p
 mysql> SHOW DATABASES; # Get list of databases
 mysql> USE buffalert <...>; # Complete the statement with any action you need
 mysql> DROP DATABASE buffalert # Delete database
-# ...
+# Full MySQL commands list: www.interviewbit.com/blog/mysql-commands
 ```
-[MySQL commands list](https://www.interviewbit.com/blog/mysql-commands/)
 
-**With PhpMyAdmin:**
-- [Install PhpMyAdmin](https://www.linuxshelltips.com/install-phpmyadmin-in-linux/)
-- Navigate to `http://localhost/phpmyadmin/`: your database should be in the list.
+With PhpMyAdmin:
+1. [Install PhpMyAdmin](https://www.linuxshelltips.com/install-phpmyadmin-in-linux/)
+2. Go to http://localhost/phpmyadmin
 
 ## Tips
 

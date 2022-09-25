@@ -71,7 +71,7 @@ git init
 heroku git:remote -a buffalert
 git add .
 git commit -m "First commit"
-git push -u heroku master
+git push -u heroku master # or: `git push heroku <branch_name>:master`
 ```
 
 4. Set database ([full tuto](https://roytuts.com/how-to-deploy-python-flask-mysql-based-application-in-heroku-cloud/))
@@ -113,6 +113,11 @@ mysql> SHOW TABLES;
 | stock_category             |
 | user                       |
 +----------------------------+
+```
+
+6. Launch app (set dynos)
+```bash
+heroku ps:scale web=1
 ```
 
 

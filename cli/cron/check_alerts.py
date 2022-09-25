@@ -23,7 +23,7 @@ def set_cronjobs(sched):
     - List of parameters for 'cron' trigger: https://apscheduler.readthedocs.io/en/3.x/modules/triggers/cron.html
     - Other triggers: 'interval' 'date', 'combining' and 'base' (https://apscheduler.readthedocs.io/en/3.x/modules/triggers/{trigger}.html)
     """
-    @sched.scheduled_job('cron', minute='*/1')
+    @sched.scheduled_job('cron', hour='*/1')
     def hourly():
         for alert in get_now_alerts():
             if is_triggered(alert):

@@ -57,16 +57,16 @@ python3 -c 'from models import User; User.create("test@test.com", "test")'
 We will use [Heroku](https://www.heroku.com/) to deploy the app.
 
 1. Create a repository on Heroku
-```
+```bash
 heroku create buffalert
 ```
 2. Add a Buildpack for Python:
-```
+```bash
 heroku buildpacks:set heroku/python -a buffalert
 ```
 
 3. Push to heroku
-```
+```bash
 git init
 heroku git:remote -a buffalert
 git add .
@@ -74,33 +74,74 @@ git commit -m "First commit"
 git push -u heroku master
 ```
 
-4. Set database
-```
-heroku addons:create cleardb:ignite
-heroku config | grep CLEARDB_DATABASE_URL # Get the db credentials # Should return a stirng like: `mysql://{user}:{password}@{host}/{database}?reconnect=true`
-# Set the environement variables (replace variables by the one from the previous string)
+4. Set database ([full tuto](https://roytuts.com/how-to-deploy-python-flask-mysql-based-application-in-heroku-cloud/))
+```bash
+# Add JawsDB addon
+heroku addons:create jawsdb
+# Get the db credentials 
+heroku config | grep JAWSDB # Returns a string like `mysql://{user}:{password}@{host}/{database}
+# Set the environement variables (these variables will replaces the ones in the .env file):
 heroku config:set DB_USER={user}
 heroku config:set DB_USER_PASSWORD={password}
 heroku config:set DB_HOST={host}
 heroku config:set DB={database}
+```
 
+5. Create tables
+- Use this command with the previous credentials:
+```bash
+mysql -h {host} -u {user} -p # and enter {password} when prompted
+```
+- Copy in the terminal the content of the `cli/db/buffalert.sql` file.
+- Verify database:
+```
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| f3e4751rfr833bas   |
+| information_schema |
++--------------------+
+mysql> USE f3e4751rfr833bas;
+Database changed
+mysql> SHOW TABLES;
++----------------------------+
+| Tables_in_f3e4751rfr833bas |
++----------------------------+
+| alert                      |
+| stock                      |
+| stock_category             |
+| user                       |
++----------------------------+
 ```
 
 
-### Manage database localy: 
+### Manage database: 
 
-With CLI:
+Localy using CLI:
 ```bash
 mysql -u <username> -p
-mysql> SHOW DATABASES; # Get list of databases
 mysql> USE buffalert <...>; # Complete the statement with any action you need
-mysql> DROP DATABASE buffalert # Delete database
 # Full MySQL commands list: www.interviewbit.com/blog/mysql-commands
 ```
 
-With PhpMyAdmin:
+Localy, using PhpMyAdmin:
 1. [Install PhpMyAdmin](https://www.linuxshelltips.com/install-phpmyadmin-in-linux/)
 2. Go to http://localhost/phpmyadmin
+
+On Heroku using CLI:
+```bash
+heroku config
+# === buffalert Config Vars
+# DB:               abc123
+# DB_HOST:          abc123.abc123.us-east-1.rds.amazonaws.com
+# DB_USER:          abc123
+# DB_USER_PASSWORD: abc123
+# ...
+mysql -h {DB_HOST} -u {DB_USER} -p # and enter {DB_USER_PASSWORD} when prompted
+# Then navigate and do queries in the database: www.interviewbit.com/blog/mysql-commands
+```
+
 
 ## Tips
 

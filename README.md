@@ -29,8 +29,8 @@ calendar
 2. Ensure that in `config.py`, `DEV_MODE` is on `True`. Then rename `..env` into `.env` and fill the file with your credentials
 3. Install dependencies
 ```bash
-pipenv shell # launch virtual environment
-pipenv install 
+pipenv shell # launch virtual environment (if port already in use: `npx kill-port <port>`)
+pipenv install # Install dependencies listed in Pipfile
 ```
 4. Create database
 ```bash

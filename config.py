@@ -10,7 +10,7 @@ SITE_NAME = 'BuffAlert'
 SITE_DOMAIN = 'buffalert.xyz'
 SITE_EMAIL = 'contact@' + SITE_DOMAIN
 
-    # Alerts
+# Alerts
 
 ALERT_FREQUENCIES = {
     # Extra fields/checks are precised in comment for each

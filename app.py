@@ -49,8 +49,8 @@ def register():
             # Save user, connect him/her and redirect to dashboard
             user = User.create(data["email"], data["password"])
             _session.connect(user)
+            flash("You have been registered successfully.")
             _email.send_register(user)
-            flash("You have been registered successfully. A confirmation email has been sent.")
             return redirect(url_for("dashboard"))
     # GET request
     return render_template("register.html", email=_form.post('email'))

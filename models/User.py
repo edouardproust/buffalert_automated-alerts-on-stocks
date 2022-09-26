@@ -1,7 +1,7 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from flask import session
-from models import db, update, delete
+from models import Alert, db, update
 
 
 class User(db.Model):
@@ -35,3 +35,13 @@ def create(email, password):
     db.session.add(user)
     db.session.commit()
     return user
+
+
+def delete(user):
+    # Delete all alerts for this user
+    alerts = Alert.find_by_user(user.id)
+    for alert in alerts:
+        db.session.delete(alert)
+    # Delete the user
+    db.session.delete(user)
+    db.session.commit()

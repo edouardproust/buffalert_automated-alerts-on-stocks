@@ -1,5 +1,6 @@
-.env
+.env*
 __pychache__/
 flask_session/
 *.pyc
 *.pio
+.git/

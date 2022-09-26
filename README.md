@@ -21,13 +21,14 @@ datetime
 calendar
 ```
 
-## Deployment
+## Development
 
 1. Clone the repository
 2. Rename `..env` into `.env` and fill the file with your credentials
 3. Install dependencies
 ```bash
-pipenv install
+pipenv shell # launch virtual environment
+pipenv install 
 ```
 4. Create database
 ```bash
@@ -41,32 +42,128 @@ python3 -c 'from models import db; db.create_all()'
 ```bash
 gunicorn app:app
 ```
-6. Launch alerts cronjob
+7. Launch alerts cronjob
 ```bash
 python3 -c 'from cli.cron import check_alerts'
 ```
 
-Create a user (credentials: test@test.com / test)
+8. Set emails with Mailtrap
+- Create a [Mailtrap](https://mailtrap.io/register/signup) account
+- Go to [Dashboard](https://mailtrap.io/inboxes) > My inbox (in "Projects" list) > In tab "SMTP Settings" click on Show Credentials > Copy/past credentials into `.env` file (section "Emails (dev)")
+
+8. (Optional) Create first user (credentials: test@test.com / test)
 ```bash
 python3 -c 'from models import User; User.create("test@test.com", "test")'
 ```
 
-### Navigate into database localy: 
+## Production
 
-**With CLI:**
-- Run the following commands:
+We will use [Heroku](https://www.heroku.com/) to deploy the app.
+
+1. In `config.py`, set `DEV_MODE` on `False`
+
+2. Create a repository on Heroku
+```bash
+heroku create buffalert
+```
+3. Add a Buildpack for Python:
+```bash
+heroku buildpacks:set heroku/python -a buffalert
+```
+
+4. Set database ([full tuto](https://roytuts.com/how-to-deploy-python-flask-mysql-based-application-in-heroku-cloud/))
+```bash
+# Add JawsDB addon
+heroku addons:create jawsdb
+# Get the db credentials 
+heroku config | grep JAWSDB # Returns a string like `mysql://{user}:{password}@{host}:{port}/{database}
+# Set the environement variables (these variables will replaces the ones in the .env file):
+heroku config:set DB={database}
+heroku config:set DB_USER={user}
+heroku config:set DB_USER_PASSWORD={password}
+heroku config:set DB_HOST={host}
+```
+
+5. Create tables
+- Use this command with the previous credentials:
+```bash
+mysql -h {host} -u {user} -p # and enter {password} when prompted
+```
+- Copy in the terminal the content of the `cli/db/buffalert.sql` file.
+- Verify database:
+```
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| f3e4751rfr833bas   |
+| information_schema |
++--------------------+
+mysql> USE f3e4751rfr833bas;
+Database changed
+mysql> SHOW TABLES;
++----------------------------+
+| Tables_in_f3e4751rfr833bas |
++----------------------------+
+| alert                      |
+| stock                      |
+| stock_category             |
+| user                       |
++----------------------------+
+```
+
+6. Set emails with Mailgun
+- Create an account on [Mailgun](https://login.mailgun.com/login/) (don't use Heroku's Mailgun addon)
+- Go to [Domains](https://app.mailgun.com/app/sending/domains) page > Click on the domain starting by `sandbox` > Under "SMTP" card click "Select" button > Under "How to send with SMTP" are your account credentials. Copy/past them into `.env` file.
+- Go to [Upgrade](https://app.mailgun.com/app/account/mailgun/upgrade) page, scroll to the bottom of the page and choose the "Foundation Trial" plan. Enter your credit card details (use Revolut's single-use virtual card to take no risk).
+- Register a domain for 1$ on [Namecheap](https://www.namecheap.com/domains/) using another single-use virtual card.
+- Go to the [Domains](https://app.mailgun.com/app/sending/domains) page on mailgun. Click "Add New Domain" button and enter the domain ou just registered on Namecheap.
+- Go to "Sending" on the left-menu > "Domain settings" > Choose your added domain in the top-right selector > Click on "DNS records" tab. In Namecheap [Domain List](https://ap.www.namecheap.com/domains/list/) page, click on "Manage" button for your domain, then on "Advanced DNS" tab and copy/past here all the DNS records from Mailgun. Check the DNS propagation with tools like [this one](https://dnschecker.org/).
+
+7. Push code to heroku
+```bash
+git init
+heroku git:remote -a buffalert
+git add .
+git commit -m "First commit"
+git push -u heroku master # or: `git push heroku <branch_name>:master`
+```
+
+8. Launch flask app and cronjob (set [dynos](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-ps-type-type))
+```bash
+# These commands activate the tasks listed in `Procfile` file.
+# Launch flask app:
+heroku ps:scale web=1
+# Launch cronjob on `check_alerts.py':
+heroku ps:scale clock=1
+```
+
+
+### Manage database: 
+
+Localy using CLI:
 ```bash
 mysql -u <username> -p
-mysql> SHOW DATABASES; # Get list of databases
 mysql> USE buffalert <...>; # Complete the statement with any action you need
-mysql> DROP DATABASE buffalert # Delete database
-# ...
+# Full MySQL commands list: www.interviewbit.com/blog/mysql-commands
 ```
-[MySQL commands list](https://www.interviewbit.com/blog/mysql-commands/)
 
-**With PhpMyAdmin:**
-- [Install PhpMyAdmin](https://www.linuxshelltips.com/install-phpmyadmin-in-linux/)
-- Navigate to `http://localhost/phpmyadmin/`: your database should be in the list.
+Localy, using PhpMyAdmin:
+1. [Install PhpMyAdmin](https://www.linuxshelltips.com/install-phpmyadmin-in-linux/)
+2. Go to http://localhost/phpmyadmin
+
+On Heroku using CLI:
+```bash
+heroku config | grep DB
+# DB:               abc123
+# DB_HOST:          abc123.abc123.us-east-1.rds.amazonaws.com
+# DB_USER:          abc123
+# DB_USER_PASSWORD: abc123
+# ...
+mysql -h {DB_HOST} -u {DB_USER} -p # and enter {DB_USER_PASSWORD} when prompted
+# Then navigate and do queries in the database: www.interviewbit.com/blog/mysql-commands
+```
+
 
 ## Tips
 

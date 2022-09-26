@@ -4,16 +4,16 @@
 import mysql.connector
 import config as c
 
-db = mysql.connector.connect(host=c.DB_HOST, user=c.DB_USER, password=c.DB_PASSWORD)
+db = mysql.connector.connect(host=c.DB_HOST, user=c.DB_USER, password=c.DB_USER_PASSWORD)
 cursor = db.cursor()
 cursor.execute("SHOW DATABASES")
 
 dbExists = False
 for x in cursor:
-    if c.DB_NAME in x:
+    if c.DB in x:
         dbExists = True
 if dbExists:
-    print(f'Database "{c.DB_NAME}" already exists!')
+    print(f'Database "{c.DB}" already exists!')
 else: 
-    cursor.execute(f"CREATE DATABASE {c.DB_NAME}")
+    cursor.execute(f"CREATE DATABASE {c.DB}")
     

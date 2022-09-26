@@ -116,11 +116,11 @@ mysql> SHOW TABLES;
 
 6. Set emails with Mailgun
 - Create an account on [Mailgun](https://login.mailgun.com/login/) (don't use Heroku's Mailgun addon)
-- Go to [Domains](https://app.mailgun.com/app/sending/domains) page > Click on the domain starting by `sandbox` > Under "SMTP" card click "Select" button > Under "How to send with SMTP" are your account credentials. Copy/past them into `.env` file.
 - Go to [Upgrade](https://app.mailgun.com/app/account/mailgun/upgrade) page, scroll to the bottom of the page and choose the "Foundation Trial" plan. Enter your credit card details (use Revolut's single-use virtual card to take no risk).
 - Register a domain for 1$ on [Namecheap](https://www.namecheap.com/domains/) using another single-use virtual card.
 - Go to the [Domains](https://app.mailgun.com/app/sending/domains) page on mailgun. Click "Add New Domain" button and enter the domain ou just registered on Namecheap.
-- Go to "Sending" on the left-menu > "Domain settings" > Choose your added domain in the top-right selector > Click on "DNS records" tab. In Namecheap [Domain List](https://ap.www.namecheap.com/domains/list/) page, click on "Manage" button for your domain, then on "Advanced DNS" tab and copy/past here all the DNS records from Mailgun. Check the DNS propagation with tools like [this one](https://dnschecker.org/).
+- Go to "Sending" on the left-menu > "Domain settings" > Choose your added domain in the top-right selector. Click on "SMTP Credantials" tab and in `.env` set the values for `MAILGUN_LOGIN` and `MAILGUN_PASSWORD` (click "Reset password" button to get the password).
+- On the same page, click on "DNS records" tab. In Namecheap [Domain List](https://ap.www.namecheap.com/domains/list/) page, click on "Manage" button for your domain, then on "Advanced DNS" tab and copy/past here all the DNS records from Mailgun. Check the DNS propagation with tools like [this one](https://dnschecker.org/).
 
 7. Push code to heroku
 ```bash
@@ -142,7 +142,7 @@ heroku ps:scale clock=1
 
 9. (Optionnal) Set your domain on Heroku: 
 - Follow [this tutorial](https://devcenter.heroku.com/articles/custom-domains)
-- Set up SSL using Cloudflare: [tutorial](https://www.youtube.com/watch?v=Z_Gy56FH8kk)
+- Set up SSL using Cloudflare: Go to "SSL/TLS" page > Choose "Flexible" encryption mode. Then go to "Edge Certificates" page > In the "Edge Certificates box, follow the the instructions to add the TXT records (in "DNS" page). The Status should change to "Active" automatically after a few minutes. In "Edge Certificates" check "Always Use HTTPS" and "Automatic HTTPS Rewrites".
 
 
 ### Manage database: 

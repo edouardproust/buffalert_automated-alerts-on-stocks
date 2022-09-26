@@ -153,7 +153,7 @@ heroku ps:scale clock=1
 
 9. (Optionnal) Set your domain on Heroku: 
 - Follow [this tutorial](https://devcenter.heroku.com/articles/custom-domains)
-- Set up SSL using Cloudflare: Go to "SSL/TLS" page > Choose "Flexible" encryption mode. Then go to "Edge Certificates" page > In the "Edge Certificates box, follow the the instructions to add the TXT records (in "DNS" page). The Status should change to "Active" automatically after a few minutes. In "Edge Certificates" check "Always Use HTTPS" and "Automatic HTTPS Rewrites".
+- Set up SSL using [Cloudflare](https://dash.cloudflare.com/login/): Go to "SSL/TLS" page > Choose "Flexible" encryption mode. Then go to "Edge Certificates" page > In the "Edge Certificates box, follow the the instructions to add the TXT records (in "DNS" page). The Status should change to "Active" automatically after a few minutes. In "Edge Certificates" check "Always Use HTTPS" and "Automatic HTTPS Rewrites".
 
 
 ### Manage database: 

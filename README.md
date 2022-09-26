@@ -1,9 +1,8 @@
 # BuffAlert
 
 **BuffAlert allows users to set stock alerts and receive free email alerts when the price they are monitoring is reached.** 
-It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quotation. Each user need to subscribe to a iexcloud account and get an personal API to avoid exceeding Free plan's requests limit (all the steps to do so are explained to the user). At the moment, BuffAlert works with US stocks only, but will be deployed soon with commodities, currencies (forex) and crypto-currencies as well.
-
-
+- It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quote. 
+- Each user must subscribe to an iexcloud account and get an personal API key in order not to exceed the limit of requests of the Free plan (all the steps to do so are clearly explained to the user).
 
 ![BuffAlert preview](static/img/screenshot.png)
 
@@ -23,14 +22,20 @@ datetime
 calendar
 ```
 
+## Upcoming updates
+
+- **Add more assets:** At the moment, BuffAlert works with US stocks only. The next release will allow user to set alerts on commodities, currencies (forex) and crypto-currencies.
+- **Password recovery:** Add the possibility for the user to reset his/her password by sending a email containing a verification token.
+- **Simultaneous alert checks on cronjob:** At the moment the alerts checking is made one alert at a time. If the users amount increases a lot, the checking launched every hour by the cronjob will be extremely long. This releases is intended to make the cronjob perform each alert checking simultaneously. Which is possible due to the fact each user has his/her own API key,, so each request will be separated.
+
 ## Development
 
 1. Clone the repository
 2. Ensure that in `config.py`, `DEV_MODE` is on `True`. Then rename `..env` into `.env` and fill the file with your credentials
 3. Install dependencies
 ```bash
-pipenv shell # launch virtual environment
-pipenv install 
+pipenv shell # launch virtual environment (if port already in use: `npx kill-port <port>`)
+pipenv install # Install dependencies listed in Pipfile
 ```
 4. Create database
 ```bash

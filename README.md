@@ -142,7 +142,7 @@ heroku ps:scale clock=1
 
 9. (Optionnal) Set your domain on Heroku: 
 - Follow [this tutorial](https://devcenter.heroku.com/articles/custom-domains)
-- Set up SSL certificates using Namecheap: 
+- Set up SSL using Cloudflare: [tutorial](https://www.youtube.com/watch?v=Z_Gy56FH8kk)
 
 
 ### Manage database: 

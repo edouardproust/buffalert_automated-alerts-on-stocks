@@ -1,8 +1,8 @@
 # BuffAlert
 
 **BuffAlert allows users to set stock alerts and receive free email alerts when the price they are monitoring is reached.** 
-- It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quote. 
-- Each user must subscribe to an iexcloud account and get an personal API key in order not to exceed the limit of requests of the Free plan (all the steps to do so are clearly explained to the user).
+It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quote. 
+Each user must subscribe to an iexcloud account and get an personal API key in order not to exceed the limit of requests of the Free plan (all the steps to do so are clearly explained to the user).
 
 ![BuffAlert preview](static/img/screenshot.png)
 
@@ -31,7 +31,7 @@ calendar
 ## Development
 
 1. Clone the repository
-2. Ensure that in `config.py`, `DEV_MODE` is on `True`. Then rename `..env` into `.env` and fill the file with your credentials
+2. Ensure that in `config.py`, `DEV_MODE` is on `True` and rename `..env` file into `.env`. In `.env` update database credentials depending on your local setup (you'll have to install and configure mysql if not done already).
 3. Install dependencies
 ```bash
 pipenv shell # launch virtual environment (if port already in use: `npx kill-port <port>`)
@@ -45,20 +45,21 @@ python3 -c 'from cli.db import create'
 ```bash
 python3 -c 'from models import db; db.create_all()'
 ```
-6. Run the app
+
+6. Set emails with Mailtrap
+- Create a [Mailtrap](https://mailtrap.io/register/signup) account
+- Go to [Dashboard](https://mailtrap.io/inboxes) > My inbox (in "Projects" list) > In tab "SMTP Settings" click on Show Credentials > Past values into `.env` file (`MAILTRAP_USERNAME` and `MAILTRAP_PASSWORD`).
+
+7. Run the app
 ```bash
 gunicorn app:app
 ```
-7. Launch alerts cronjob
+8. Launch alerts cronjob
 ```bash
 python3 -c 'from cli.cron import check_alerts'
 ```
 
-8. Set emails with Mailtrap
-- Create a [Mailtrap](https://mailtrap.io/register/signup) account
-- Go to [Dashboard](https://mailtrap.io/inboxes) > My inbox (in "Projects" list) > In tab "SMTP Settings" click on Show Credentials > Past values into `.env` file (`MAILTRAP_USERNAME` and `MAILTRAP_PASSWORD`).
-
-8. (Optional) Create first user (credentials: test@test.com / test)
+9. (Optional) Create first user (credentials: test@test.com / test)
 ```bash
 python3 -c 'from models import User; User.create("test@test.com", "test")'
 ```

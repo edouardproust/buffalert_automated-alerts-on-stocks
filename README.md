@@ -170,6 +170,6 @@ mysql -h {DB_HOST} -u {DB_USER} -p # and enter {DB_USER_PASSWORD} when prompted
 - On dev environement on Linux, access the local database files in: `admin:///var/lib/mysql/{db_name}` folder
 
 ## Links
-- (FLask-SQLAlchemy - Models definition)[https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/]
-- (FLask-SQLAlchemy - Db Queries syntax)[https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries]
-- (Theme StartBootstrap)[https://startbootstrap.github.io/startbootstrap-new-age/]
+- [FLask-SQLAlchemy - Models definition](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)
+- [FLask-SQLAlchemy - Db Queries syntax](https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries)
+- [Theme StartBootstrap](https://startbootstrap.github.io/startbootstrap-new-age/)

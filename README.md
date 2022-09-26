@@ -140,7 +140,9 @@ heroku ps:scale web=1
 heroku ps:scale clock=1
 ```
 
-9. (Optionnal) Set your domain on Heroku: [tutorial](https://devcenter.heroku.com/articles/custom-domains)
+9. (Optionnal) Set your domain on Heroku: 
+- Follow [this tutorial](https://devcenter.heroku.com/articles/custom-domains)
+- Set up SSL certificates using Namecheap: 
 
 
 ### Manage database: 

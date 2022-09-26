@@ -1,13 +1,13 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from flask import flash
 from datetime import datetime
 import config as c
 from helpers import _string, _number
 from models import User
 
-cta = 'https://' + c.SITE_DOMAIN + '/dashboard'
-
+CTA = 'https://' + c.SITE_DOMAIN + '/dashboard'
 
 def send_register(user):
 
@@ -16,7 +16,7 @@ def send_register(user):
     You have been registered succesfully on {c.SITE_NAME}.
     - Email: {user.email}
     - Password: ******
-    Go to your dashboard: {cta}
+    Go to your dashboard: {CTA}
     """
     html = f"""\
     <html>
@@ -27,12 +27,15 @@ def send_register(user):
                 <li>Email: {user.email}</li>
                 <li>Password: ******</li>
             </ul>
-            <p><a href="{cta}" target="_blank">Go to your dashboard ➔</a></b>
+            <p><a href="{CTA}" target="_blank">Go to your dashboard ➔</a></b>
         </body>
     </html>
     """
     subject = f"{c.SITE_NAME}: registration"
-    send(user.email, text, html, subject)
+    if send(user.email, text, html, subject):
+        flash("A confirmation email have been sent.")
+    else:
+        flash("Confirmation email not sent due to of an error please contact the webmaster.")
 
 
 def send_alert(alert):
@@ -48,7 +51,7 @@ def send_alert(alert):
     - Price: {_number.usd(stock.price)}
     - Frequency: {c.ALERT_FREQUENCIES[alert.frequency]}
     - Time: {_string.alert_time_string(alert)}
-    Go to your dashboard: {cta}
+    Go to your dashboard: {CTA}
     """
     html = f"""\
     <html>
@@ -60,7 +63,7 @@ def send_alert(alert):
                 <li>Price: {_number.usd(stock.price)}</li>
                 <li>Alert checked {c.ALERT_FREQUENCIES[alert.frequency].lower()} {_string.alert_time_string(alert).lower()}</li>
             </ul>
-            <p><a href="{cta}" target="_blank">Go to your dashboard ➔</a></b>
+            <p><a href="{CTA}" target="_blank">Go to your dashboard ➔</a></b>
         </body>
     </html>
     """
@@ -86,7 +89,7 @@ def send(receiver_email, msg_text, msg_html=None, subject=None):
     try:
         message = MIMEMultipart("alternative")
         message["Subject"] = subject or f"Email from {c.SITE_NAME}"
-        message["From"] = f"{c.SITE_NAME} <{c.EMAIL_SENDER}>"
+        message["From"] = f"{c.SITE_NAME} <{c.SITE_EMAIL}>"
         message["To"] = receiver_email
         
         # convert both parts to MIMEText objects and add them to the MIMEMultipart message
@@ -96,14 +99,13 @@ def send(receiver_email, msg_text, msg_html=None, subject=None):
             part2 = MIMEText(msg_html, "html")
             message.attach(part2)
         # send your email
-        with smtplib.SMTP(c.EMAIL_SERVER, c.EMAIL_PORT) as server:
-            server.login(c.EMAIL_LOGIN, c.EMAIL_PASSWORD)
+        with smtplib.SMTP(c.EMAIL_HOST, c.EMAIL_PORT) as server:
+            server.login(c.EMAIL_USERNAME, c.EMAIL_PASSWORD)
             server.sendmail(
-                c.EMAIL_SENDER, receiver_email, message.as_string()
+                c.SITE_EMAIL, receiver_email, message.as_string()
             )
-    except:
-        error = f'{datetime.now()} > Failed to send email.'
-        print(f'{datetime.now()} > {error}')
+    except Exception as e:
+        print(f'{datetime.now()} > Failed to send email: {e}')
         return False
 
     return True

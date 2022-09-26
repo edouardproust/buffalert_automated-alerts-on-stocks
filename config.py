@@ -1,27 +1,14 @@
 from dotenv import load_dotenv
 import os
-
 load_dotenv()
-
 
 # App configuration
 
+DEV_MODE = False
+
 SITE_NAME = 'BuffAlert'
-SITE_DOMAIN = 'buffalert.com'
-APP_SECRET = os.getenv('APP_SECRET')
-
-# Database
-DB_HOST = os.getenv('DB_HOST')
-DB_USER = os.getenv('DB_USER')
-DB_USER_PASSWORD = os.getenv('DB_USER_PASSWORD')
-DB = os.getenv('DB')
-
-# Email
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_SERVER = os.getenv('EMAIL_SERVER')
-EMAIL_LOGIN = os.getenv('EMAIL_LOGIN')
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
-EMAIL_SENDER = os.getenv('EMAIL_SENDER')
+SITE_DOMAIN = 'buffalert.xyz'
+SITE_EMAIL = 'contact@' + SITE_DOMAIN
 
 # Alerts
 
@@ -43,10 +30,25 @@ ALERT_WEEKDAYS = {
     6: 'Sunday'
 }
 
+# Database variables setup
+
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_USER_PASSWORD = os.getenv('DB_USER_PASSWORD')
+DB = os.getenv('DB')
+
+# Email variables setup
+
+EMAIL_HOST = os.getenv('MAILTRAP_HOST') if DEV_MODE else os.getenv('MAILGUN_SMTP_HOSTNAME')
+EMAIL_PORT = os.getenv('MAILTRAP_PORT') if DEV_MODE else os.getenv('MAILGUN_PORT')
+EMAIL_USERNAME = os.getenv('MAILTRAP_USERNAME') if DEV_MODE else os.getenv('MAILGUN_USERNAME')
+EMAIL_PASSWORD = os.getenv('MAILTRAP_PASSWORD') if DEV_MODE else os.getenv('MAILGUN_DEFAULT_PASSWORD')
+
+
 def app_config(app):
     from flask_session import Session
 
-    app.config['SECRET_KEY'] = APP_SECRET
+    app.config['SECRET_KEY'] = os.getenv('APP_SECRET')
 
     # Database
     app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{DB_USER}:{DB_USER_PASSWORD}@{DB_HOST}/{DB}"
@@ -69,16 +71,12 @@ app = None
 
 def set_app():
     from flask import Flask
-
     global app
     if not app:
         app = Flask(__name__)
         app_config(app)
 
-
 def get_app():
-
     if not app:
         set_app()
-
     return app

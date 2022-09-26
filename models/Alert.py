@@ -14,6 +14,7 @@ class Alert(db.Model):
     day = db.Column(db.Integer)
     weekday = db.Column(db.Integer)
     hour = db.Column(db.Integer)
+    triggered_at = db.Column(db.DateTime, default=None)
     stock = db.relationship('Stock', backref='user', uselist=False)
 
 

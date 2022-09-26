@@ -27,8 +27,8 @@ def set_cronjobs(sched):
     def hourly():
         for alert in get_now_alerts():
             if is_triggered(alert):
-                # delete(alert)
                 send_alert(alert)
+                Alert.update(alert, {"triggered_at": datetime.now()})
 
 
 def get_now_alerts():

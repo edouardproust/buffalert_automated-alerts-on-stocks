@@ -26,7 +26,7 @@ calendar
 ## Development
 
 1. Clone the repository
-2. Rename `..env` into `.env` and fill the file with your credentials
+2. Ensure that in `config.py`, `DEV_MODE` is on `True`. Then rename `..env` into `.env` and fill the file with your credentials
 3. Install dependencies
 ```bash
 pipenv shell # launch virtual environment
@@ -62,7 +62,7 @@ python3 -c 'from models import User; User.create("test@test.com", "test")'
 
 We will use [Heroku](https://www.heroku.com/) to deploy the app.
 
-1. In `config.py`, set `DEV_MODE` on `False`
+1. ENsure that in `config.py`, `DEV_MODE` is on `False`
 
 2. Create a repository on Heroku
 ```bash

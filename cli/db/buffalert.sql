@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 25, 2022 at 09:53 PM
+-- Generation Time: Sep 26, 2022 at 03:37 PM
 -- Server version: 8.0.30-0ubuntu0.20.04.2
 -- PHP Version: 7.4.30
 
@@ -24,6 +24,8 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
+DROP TABLE alert, stock, stock_category, user;
+
 --
 -- Table structure for table `alert`
 --
@@ -36,7 +38,8 @@ CREATE TABLE `alert` (
   `frequency` varchar(1) NOT NULL,
   `day` int DEFAULT NULL,
   `weekday` int DEFAULT NULL,
-  `hour` int DEFAULT NULL
+  `hour` int DEFAULT NULL,
+  `triggered_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

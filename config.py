@@ -10,7 +10,7 @@ SITE_NAME = 'BuffAlert'
 SITE_DOMAIN = 'buffalert.xyz'
 SITE_EMAIL = 'contact@' + SITE_DOMAIN
 
-# Alerts
+    # Alerts
 
 ALERT_FREQUENCIES = {
     # Extra fields/checks are precised in comment for each
@@ -41,8 +41,8 @@ DB = os.getenv('DB')
 
 EMAIL_HOST = os.getenv('MAILTRAP_HOST') if DEV_MODE else os.getenv('MAILGUN_SMTP_HOSTNAME')
 EMAIL_PORT = os.getenv('MAILTRAP_PORT') if DEV_MODE else os.getenv('MAILGUN_PORT')
-EMAIL_USERNAME = os.getenv('MAILTRAP_USERNAME') if DEV_MODE else os.getenv('MAILGUN_USERNAME')
-EMAIL_PASSWORD = os.getenv('MAILTRAP_PASSWORD') if DEV_MODE else os.getenv('MAILGUN_DEFAULT_PASSWORD')
+EMAIL_USERNAME = os.getenv('MAILTRAP_USERNAME') if DEV_MODE else os.getenv('MAILGUN_LOGIN')
+EMAIL_PASSWORD = os.getenv('MAILTRAP_PASSWORD') if DEV_MODE else os.getenv('MAILGUN_PASSWORD')
 
 
 def app_config(app):

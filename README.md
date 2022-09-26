@@ -1,7 +1,9 @@
 # BuffAlert
 
-**BuffAlert allows users to receive free email alerts when a stock product crosses a certain price level.** 
+**BuffAlert allows users to set stock alerts and receive free email alerts when the price they are monitoring is reached.** 
 It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quotation. Each user need to subscribe to a iexcloud account and get an personal API to avoid exceeding Free plan's requests limit (all the steps to do so are explained to the user). At the moment, BuffAlert works with US stocks only, but will be deployed soon with commodities, currencies (forex) and crypto-currencies as well.
+
+
 
 ![BuffAlert preview](static/img/screenshot.png)
 
@@ -49,7 +51,7 @@ python3 -c 'from cli.cron import check_alerts'
 
 8. Set emails with Mailtrap
 - Create a [Mailtrap](https://mailtrap.io/register/signup) account
-- Go to [Dashboard](https://mailtrap.io/inboxes) > My inbox (in "Projects" list) > In tab "SMTP Settings" click on Show Credentials > Copy/past credentials into `.env` file (section "Emails (dev)")
+- Go to [Dashboard](https://mailtrap.io/inboxes) > My inbox (in "Projects" list) > In tab "SMTP Settings" click on Show Credentials > Past values into `.env` file (`MAILTRAP_USERNAME` and `MAILTRAP_PASSWORD`).
 
 8. (Optional) Create first user (credentials: test@test.com / test)
 ```bash
@@ -113,12 +115,17 @@ mysql> SHOW TABLES;
 ```
 
 6. Set emails with Mailgun
-- Create an account on [Mailgun](https://login.mailgun.com/login/) (don't use Heroku's Mailgun addon)
-- Go to [Domains](https://app.mailgun.com/app/sending/domains) page > Click on the domain starting by `sandbox` > Under "SMTP" card click "Select" button > Under "How to send with SMTP" are your account credentials. Copy/past them into `.env` file.
-- Go to [Upgrade](https://app.mailgun.com/app/account/mailgun/upgrade) page, scroll to the bottom of the page and choose the "Foundation Trial" plan. Enter your credit card details (use Revolut's single-use virtual card to take no risk).
-- Register a domain for 1$ on [Namecheap](https://www.namecheap.com/domains/) using another single-use virtual card.
-- Go to the [Domains](https://app.mailgun.com/app/sending/domains) page on mailgun. Click "Add New Domain" button and enter the domain ou just registered on Namecheap.
-- Go to "Sending" on the left-menu > "Domain settings" > Choose your added domain in the top-right selector > Click on "DNS records" tab. In Namecheap [Domain List](https://ap.www.namecheap.com/domains/list/) page, click on "Manage" button for your domain, then on "Advanced DNS" tab and copy/past here all the DNS records from Mailgun. Check the DNS propagation with tools like [this one](https://dnschecker.org/).
+- Register a domain for 1$ on [Namecheap](https://www.namecheap.com/domains/).
+- Create an account on [Mailgun](https://login.mailgun.com/login/) (don't use Heroku's Mailgun addon). Then go to [Upgrade](https://app.mailgun.com/app/account/mailgun/upgrade) page > Choose the "Foundation Trial" plan (bottom of the page). Enter your credit card details (Pro-tip: always use a *single-use* virtual card to pay online).
+- On Mailgun, go to the [Domains](https://app.mailgun.com/app/sending/domains) page > Click "Add New Domain" button. Enter the domain ou just registered on Namecheap.
+- Go to "Sending" on the left-menu > "Domain settings" > Choose your new domain in the top-right selector > Click on "SMTP Credentials" tab. Set the variables as follow, replacing `{login}` and`{password}` by the values given by Mailgun:
+```bash
+heroku config:set MAILGUN_SMTP_HOSTNAME=smtp.eu.mailgun.org
+heroku config:set MAILGUN_PORT=587
+heroku config:set MAILGUN_LOGIN={login}
+heroku config:set MAILGUN_PASSWORD={password}
+```
+- On the same page, click on "DNS records" tab. In Namecheap [Domain List](https://ap.www.namecheap.com/domains/list/) page > click on "Manage" button for your domain > Click on "Advanced DNS" tab. Copy/past here all the DNS records from Mailgun. Check the DNS propagation with tools like [this one](https://dnschecker.org/).
 
 7. Push code to heroku
 ```bash
@@ -137,6 +144,10 @@ heroku ps:scale web=1
 # Launch cronjob on `check_alerts.py':
 heroku ps:scale clock=1
 ```
+
+9. (Optionnal) Set your domain on Heroku: 
+- Follow [this tutorial](https://devcenter.heroku.com/articles/custom-domains)
+- Set up SSL using Cloudflare: Go to "SSL/TLS" page > Choose "Flexible" encryption mode. Then go to "Edge Certificates" page > In the "Edge Certificates box, follow the the instructions to add the TXT records (in "DNS" page). The Status should change to "Active" automatically after a few minutes. In "Edge Certificates" check "Always Use HTTPS" and "Automatic HTTPS Rewrites".
 
 
 ### Manage database: 

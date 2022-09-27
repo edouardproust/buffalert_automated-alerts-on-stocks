@@ -1,8 +1,11 @@
 # BuffAlert
 
-**BuffAlert allows users to set stock alerts and receive free email alerts when the price they are monitoring is reached.** 
+**BuffAlert allows users to set stock alerts and receive free email when the price they are monitoring is reached.** 
 It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quote. 
 Each user must subscribe to an iexcloud account and get an personal API key in order not to exceed the limit of requests of the Free plan (all the steps to do so are clearly explained to the user).
+
+➡ **[Live demo](https://buffalert.xyz)**<br/>
+➡ **Video demo** (coming soon)
 
 ![BuffAlert preview](static/img/screenshot.png)
 
@@ -26,7 +29,7 @@ calendar
 
 - **Add more assets:** At the moment, BuffAlert works with US stocks only. The next release will allow user to set alerts on commodities, currencies (forex) and crypto-currencies.
 - **Password recovery:** Add the possibility for the user to reset his/her password by sending a email containing a verification token.
-- **Simultaneous alert checks on cronjob:** At the moment the alerts checking is made one alert at a time. If the users amount increases a lot, the checking launched every hour by the cronjob will be extremely long. This releases is intended to make the cronjob perform each alert checking simultaneously. Which is possible due to the fact each user has his/her own API key,, so each request will be separated.
+- **Simultaneous alert checks on cronjob:** At the moment the checking of alerts is done one alert at a time. If the number of users becomes high, the check launched every hour by the cronjob will be very long. This version is intended to make cronjob perform each alert check simultaneously. This is possible because each user has his own API key, so each request will be separate.
 
 ## Development
 
@@ -68,18 +71,27 @@ python3 -c 'from models import User; User.create("test@test.com", "test")'
 
 We will use [Heroku](https://www.heroku.com/) to deploy the app.
 
-1. ENsure that in `config.py`, `DEV_MODE` is on `False`
+1. Ensure that in `config.py`, `DEV_MODE` is on `False`.
 
 2. Create a repository on Heroku
 ```bash
-heroku create buffalert
+heroku create <app_name>
 ```
 3. Add a Buildpack for Python:
 ```bash
-heroku buildpacks:set heroku/python -a buffalert
+heroku buildpacks:set heroku/python -a <app_name>
 ```
 
-4. Set database ([full tuto](https://roytuts.com/how-to-deploy-python-flask-mysql-based-application-in-heroku-cloud/))
+4. Push code to heroku
+```bash
+git init
+heroku git:remote -a <app_name>
+git add .
+git commit -m "First commit"
+git push -u heroku master # or: `git push heroku <branch_name>:master`
+```
+
+5. Set database ([full tuto](https://roytuts.com/how-to-deploy-python-flask-mysql-based-application-in-heroku-cloud/))
 ```bash
 # Add JawsDB addon
 heroku addons:create jawsdb
@@ -92,26 +104,26 @@ heroku config:set DB_USER_PASSWORD={password}
 heroku config:set DB_HOST={host}
 ```
 
-5. Create tables
+6. Create tables
 - Use this command with the previous credentials:
 ```bash
 mysql -h {host} -u {user} -p # and enter {password} when prompted
 ```
-- Copy in the terminal the content of the `cli/db/buffalert.sql` file.
+- In the terminal, past the content of the `cli/db/buffalert.sql` file.
 - Verify database:
 ```
 mysql> SHOW DATABASES;
 +--------------------+
 | Database           |
 +--------------------+
-| f3e4751rfr833bas   |
+| abc123def456ghi7   |
 | information_schema |
 +--------------------+
-mysql> USE f3e4751rfr833bas;
+mysql> USE abc123def456ghi7;
 Database changed
 mysql> SHOW TABLES;
 +----------------------------+
-| Tables_in_f3e4751rfr833bas |
+| Tables_in_abc123def456ghi7 |
 +----------------------------+
 | alert                      |
 | stock                      |
@@ -120,7 +132,7 @@ mysql> SHOW TABLES;
 +----------------------------+
 ```
 
-6. Set emails with Mailgun
+7. Set emails with Mailgun
 - Register a domain for 1$ on [Namecheap](https://www.namecheap.com/domains/).
 - Create an account on [Mailgun](https://login.mailgun.com/login/) (don't use Heroku's Mailgun addon). Then go to [Upgrade](https://app.mailgun.com/app/account/mailgun/upgrade) page > Choose the "Foundation Trial" plan (bottom of the page). Enter your credit card details (Pro-tip: always use a *single-use* virtual card to pay online).
 - On Mailgun, go to the [Domains](https://app.mailgun.com/app/sending/domains) page > Click "Add New Domain" button. Enter the domain ou just registered on Namecheap.
@@ -133,15 +145,6 @@ heroku config:set MAILGUN_PASSWORD={password}
 ```
 - On the same page, click on "DNS records" tab. In Namecheap [Domain List](https://ap.www.namecheap.com/domains/list/) page > click on "Manage" button for your domain > Click on "Advanced DNS" tab. Copy/past here all the DNS records from Mailgun. Check the DNS propagation with tools like [this one](https://dnschecker.org/).
 
-7. Push code to heroku
-```bash
-git init
-heroku git:remote -a buffalert
-git add .
-git commit -m "First commit"
-git push -u heroku master # or: `git push heroku <branch_name>:master`
-```
-
 8. Launch flask app and cronjob (set [dynos](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-ps-type-type))
 ```bash
 # These commands activate the tasks listed in `Procfile` file.
@@ -151,7 +154,13 @@ heroku ps:scale web=1
 heroku ps:scale clock=1
 ```
 
-9. (Optionnal) Set your domain on Heroku: 
+9. Visit the app: 
+```bash
+heroku info -s | grep web_url | cut -d= -f2 
+# And click the link ;)
+```
+
+10. (Optionnal) Set a domain name and add SSL encryption 
 - Follow [this tutorial](https://devcenter.heroku.com/articles/custom-domains)
 - Set up SSL using [Cloudflare](https://dash.cloudflare.com/login/): Go to "SSL/TLS" page > Choose "Flexible" encryption mode. Then go to "Edge Certificates" page > In the "Edge Certificates box, follow the the instructions to add the TXT records (in "DNS" page). The Status should change to "Active" automatically after a few minutes. In "Edge Certificates" check "Always Use HTTPS" and "Automatic HTTPS Rewrites".
 
@@ -161,15 +170,14 @@ heroku ps:scale clock=1
 Localy using CLI:
 ```bash
 mysql -u <username> -p
-mysql> USE buffalert <...>; # Complete the statement with any action you need
 # Full MySQL commands list: www.interviewbit.com/blog/mysql-commands
 ```
 
-Localy, using PhpMyAdmin:
+Localy using GUI:
 1. [Install PhpMyAdmin](https://www.linuxshelltips.com/install-phpmyadmin-in-linux/)
 2. Go to http://localhost/phpmyadmin
 
-On Heroku using CLI:
+Online (Heroku) using CLI:
 ```bash
 heroku config | grep DB
 # DB:               abc123
@@ -181,6 +189,14 @@ mysql -h {DB_HOST} -u {DB_USER} -p # and enter {DB_USER_PASSWORD} when prompted
 # Then navigate and do queries in the database: www.interviewbit.com/blog/mysql-commands
 ```
 
+Online using GUI:
+```bash
+# Install MySQL Workbench
+sudo snap install mysql-workbench-community
+# Then add a new connexion with the heroku DBJaws credentials.
+# Get them with this command:
+heroku config | grep DB
+```
 
 ## Tips
 

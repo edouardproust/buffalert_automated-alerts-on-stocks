@@ -200,6 +200,8 @@ heroku config | grep DB
 
 ## Tips
 
+- Check Heroku logs: `heroku logs --tail` (full list of the correct timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones))
+- Edit Heroku logs timezone: `heroku config:add TZ="Europe/Paris"`
 - On dev environement on Linux, access the local database files in: `admin:///var/lib/mysql/{db_name}` folder
 
 ## Links

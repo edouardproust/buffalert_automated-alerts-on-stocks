@@ -4,7 +4,7 @@ load_dotenv()
 
 # App configuration
 
-DEV_MODE = False
+DEV_MODE = True
 
 SITE_NAME = 'BuffAlert'
 SITE_DOMAIN = 'buffalert.xyz'

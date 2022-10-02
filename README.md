@@ -4,8 +4,8 @@
 It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on-heroku_8) for the automation part and [iexcloud API](https://iexcloud.io/docs/) for the quote. 
 Each user must subscribe to an iexcloud account and get an personal API key in order not to exceed the limit of requests of the Free plan (all the steps to do so are clearly explained to the user).
 
-➡ **[Live demo](https://buffalert.xyz)**<br/>
-➡ **Video demo** (coming soon)
+➡ **Live demo:** https://buffalert.xyz<br/>
+➡ **Video demo:** https://vimeo.com/756163443
 
 ![BuffAlert preview](static/img/screenshot.png)
 

@@ -5,7 +5,7 @@ It works using [cron](https://edouardproust.dev/blog/python-deploy-a-cron-job-on
 Each user must subscribe to an iexcloud account and get an personal API key in order not to exceed the limit of requests of the Free plan (all the steps to do so are clearly explained to the user).
 
 ➡ **Live demo:** https://buffalert.xyz<br/>
-➡ **Video demo:** https://vimeo.com/756163443
+➡ **Video demo:** https://vimeo.com/757308907
 
 ![BuffAlert preview](static/img/screenshot.png)
 
